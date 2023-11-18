@@ -53,26 +53,25 @@ func TestHttp(t *testing.T) {
 func TestMultiChannel(t *testing.T) {
 	ch1 := make(chan string)
 	ch2 := make(chan string)
-	  // 启动goroutine模拟耗时操作
-	  go func() {
+	// 启动goroutine模拟耗时操作
+	go func() {
 		time.Sleep(3 * time.Second)
 		ch1 <- "Operation 1 completed!"
-	  }()
-	
-	  // 启动goroutine模拟另一个耗时操作
-	  go func() {
+	}()
+
+	// 启动goroutine模拟另一个耗时操作
+	go func() {
 		time.Sleep(5 * time.Second)
 		ch2 <- "Operation 2 completed!"
-	  }()
-	
-	  // 使用select和time.After实现超时机制和多通道选择
-	  select {
-	  case result := <-ch1:
+	}()
+
+	// 使用select和time.After实现超时机制和多通道选择
+	select {
+	case result := <-ch1:
 		fmt.Println(result)
-	  case result := <-ch2:
+	case result := <-ch2:
 		fmt.Println(result)
-	  case <-time.After(4 * time.Second):
+	case <-time.After(4 * time.Second):
 		fmt.Println("Timeout! Operations took too long.")
-	  }
 	}
 }
