@@ -1,0 +1,41 @@
+package main
+
+import (
+	"io"
+	"log"
+	"net"
+)
+
+func handle(conn net.Conn) {
+	defer conn.Close()
+	target, err := net.Dial("tcp", "192.168.10.128:80")
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	defer target.Close()
+	go func() {
+		_, err := io.Copy(target, conn)
+		if err != nil {
+			log.Println(err)
+		}
+	}()
+	_, err = io.Copy(conn, target)
+	if err != nil {
+		log.Println(err)
+	}
+}
+func main() {
+	listen, err := net.Listen("tcp", "127.0.0.1:55")
+	if err != nil {
+		log.Fatal(err)
+	}
+	for {
+		conn, err := listen.Accept()
+		if err != nil {
+			log.Println(err)
+			continue
+		}
+		go handle(conn)
+	}
+}
