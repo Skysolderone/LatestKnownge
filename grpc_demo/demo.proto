@@ -1,0 +1,12 @@
+syntax="proto3";
+//package demo;
+option go_package="./demo";
+message Request{
+    string message =1;
+}
+message Response {
+    string message=1;
+}
+service DemoService{
+    rpc SayHello(Request)returns (Response);
+}
