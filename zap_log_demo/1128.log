@@ -1,0 +1,4 @@
+{"level":"debug","ts":"2023-11-28T10:40:55.122+0800","msg":"sug:tring fetch url:http://www.baidu.com"}
+{"level":"info","ts":"2023-11-28T10:40:55.172+0800","msg":"sug:fetch url succes"}
+{"level":"debug","ts":"2023-11-28T10:40:55.172+0800","msg":"sug:tring fetch url:http://www.google.com"}
+{"level":"info","ts":"2023-11-28T10:40:55.265+0800","msg":"sug:fetch url succes"}
