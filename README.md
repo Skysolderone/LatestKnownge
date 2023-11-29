@@ -1,5 +1,7 @@
 # LatestKnownge
 
+一些golangdemo
+
 
 go生成二维码 
 go get github.com/skip2/go-qrcode
