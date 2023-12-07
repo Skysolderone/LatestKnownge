@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// 需要构建二进制文件  然后进行test
+// 需要构建二进制文件  然后进行test  
 func hello(cmd *cobra.Command, args []string) {
 	fmt.Println("hello world")
 }

@@ -14,6 +14,6 @@ func main() {
 	num2 := big.NewRat(3, 4)
 	sum := new(big.Rat)
 	sum.Add(num1, num2)
-	fmt.Println(sum)
+	fmt.Println(sum)//5/4
 
 }

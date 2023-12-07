@@ -19,7 +19,7 @@ func test() int {
 		i++
 		fmt.Println("defer 3 :", i)
 	}()
-	return i
+	return i //0
 }
 func test1() (i int) {
 	defer func() {
@@ -30,7 +30,7 @@ func test1() (i int) {
 		i++
 		fmt.Println("defer 2 :", i)
 	}()
-	return i
+	return i //2
 }
 
 func test2() (i int) {
@@ -43,7 +43,7 @@ func test2() (i int) {
 		s++
 		fmt.Println("defer 2", s)
 	}(i)
-	return i
+	return i //6
 }
 func TestDefer(t *testing.T) {
 	a := test()

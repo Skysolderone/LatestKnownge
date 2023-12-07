@@ -15,8 +15,8 @@ func (s *set) Add(v string) {
 	s.m[v] = struct{}{}
 }
 func (s *set) Contains(v string) bool {
-	_, c := s.m[v]
-	return c
+	_, ok := s.m[v]
+	return ok
 }
 func (s *set) Remove(v string) {
 	delete(s.m, v)

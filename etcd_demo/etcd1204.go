@@ -12,7 +12,7 @@ import (
 
 func main() {
 	config := clientv3.Config{
-		Endpoint:    []string{"xxx.xxx.xxx.xxx:2379"},
+		Endpoint:    []string{"127.0.0.1:2379"},
 		DialTimeout: 5 * time.Second,
 	}
 	//get client conn
