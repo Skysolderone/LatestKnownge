@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"os"
 
 	"github.com/opentracing/opentracing-go"
 	"github.com/opentracing/opentracing-go/log"
@@ -37,10 +36,10 @@ func initJaeger(service string) (opentracing.Tracer, io.Closer) {
 	return tracer, closer
 }
 func main() {
-	if len(os.Args) != 2 {
-		os.Exit(1)
-	}
-	helloTo := os.Args[1]
+	// if len(os.Args) != 2 {
+	// 	os.Exit(1)
+	// }
+	helloTo := "wws"
 	//init tracing
 	// tracer := opentracing.GlobalTracer()
 	tracer, closer := initJaeger("hello-demo")

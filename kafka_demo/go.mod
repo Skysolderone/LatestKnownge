@@ -5,6 +5,7 @@ go 1.20
 require (
 	github.com/IBM/sarama v1.42.1
 	github.com/bsm/sarama-cluster v2.1.15+incompatible
+	github.com/segmentio/kafka-go v0.4.46
 )
 
 require (
