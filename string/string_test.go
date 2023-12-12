@@ -63,7 +63,7 @@ func byteConcat(n int, str string) string {
 	return string(buf)
 }
 
-// []byte 20
+// []byte int
 func preByteConcat(n int, str string) string {
 	buf := make([]byte, 0, n*len(str))
 	for i := 0; i < n; i++ {
