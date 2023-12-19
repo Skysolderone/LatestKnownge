@@ -16,4 +16,6 @@ func main() {
 	}
 	ls := viper.Get("where")
 	fmt.Println(ls)
+	str := viper.Get("hello")
+	fmt.Println(str)
 }
