@@ -9,8 +9,8 @@ import (
 
 var upg = websocket.Upgrader{}
 
-// 想法错误  尝试使用io.copy 直接传输两个ws的数据
-// cannot use ws (variable of type *websocket.Conn) as io.Writer value in argument to io.Copy: *websocket.Conn does not implement io.Writer (missing method Write)
+//  尝试使用io.copy 直接传输两个ws的数据
+//  需要使用ws.UnderlyingConn() 来进行数据拷贝
 func main() {
 	r := gin.Default()
 	r.GET("/tesws", testWs)
@@ -30,7 +30,7 @@ func testWs(c *gin.Context) {
 		defer ws.Close()
 		defer cs.Close()
 		for {
-			_, err := io.Copy(ws, cs)
+			_, err := io.Copy(ws.UnderlyingConn(), cs.UnderlyingConn())
 			if err != nil {
 				return
 			}
