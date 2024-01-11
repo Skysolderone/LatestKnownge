@@ -23,6 +23,7 @@ func main() {
 		panic(err)
 	}
 	defer c.Close()
+	trans := make(chan string, 1)
 	go func() {
 
 		for {
@@ -31,11 +32,14 @@ func main() {
 				log.Println("read:", err)
 				return
 			}
-			log.Println("MESSAGE:", string(message))
+			trans <- string(message)
 		}
 	}()
+	// log.Println("MESSAGE:", ls)
 	for {
 		select {
+		case message := <-trans:
+			log.Println("MESSAGE:", message)
 		case <-interrupt:
 			os.Exit(1)
 		}
