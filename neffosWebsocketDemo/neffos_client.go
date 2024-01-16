@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/kataras/iris/v12/websocket"
+	"github.com/kataras/neffos"
 )
 
 var clientEvents = websocket.Namespaces{
@@ -29,13 +30,13 @@ func main() {
 	ctx, cancel := context.WithDeadline(context.Background(), time.Now().Add(10*time.Second))
 	defer cancel()
 	dialer := websocket.DefaultGobwasDialer
-	// client, err := websocket.Dial(ctx, dialer, "ws://localhost:8080/", clientEvents)
+	//client, err := websocket.Dial(ctx, dialer, "ws://localhost:8080/", clientEvents)
 	client, err := websocket.Dial(ctx, dialer, "ws://8.222.221.115:14000/binanceus", clientEvents)
 	if err != nil {
 		panic(err)
 	}
 	defer client.Close()
-	c, err := client.Connect(ctx, "default")
+	client.Connect(ctx, "default")
 	if err != nil {
 		panic(err)
 	}
@@ -43,7 +44,10 @@ func main() {
 	// fmt.Fprint(os.Stdout, ">> ")
 	// scanner := bufio.NewScanner(os.Stdin)
 	for {
-		c.Emit("chat", []byte("test"))
+		clientEvents.On("default", "BTCUSDT", func(conn *neffos.NSConn, message neffos.Message) error {
+			log.Println(string(message.Body))
+			return nil
+		})
 		// if !scanner.Scan() {
 		// 	log.Printf("ERROR: %v", scanner.Err())
 		// 	return
