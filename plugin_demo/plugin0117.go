@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"plugin"
+)
 
 /*
 load plugin
@@ -28,12 +31,32 @@ func (m *MyCalculator) Add(a, b int) int {
 func (m *MyCalculator) Sub(a, b int) int {
 	return a - b
 }
+
 //go build -buildmode=plugin -o myplugin.so main.go
+
+// func main() {
+// fmt.Println("Hello plugin")
+// var c Calculator
+// if c != nil {
+// 	fmt.Println(c.Add(1, 2))
+// 	fmt.Println(c.Sub(2, 1))
+// }
+// }
+
+type Driver interface {
+	Name() string
+}
+
 func main() {
-	fmt.Println("Hello plugin")
-	var c Calculator
-	if c != nil {
-		fmt.Println(c.Add(1, 2))
-		fmt.Println(c.Sub(2, 1))
+	p, err := plugin.Open("./test.dll")
+	if err != nil {
+		panic(err)
 	}
+	newDriverSymbol, err := p.Lookup("NewDriver")
+	if err != nil {
+		panic(err)
+	}
+	newDriverSymbolFunc := newDriverSymbol.(func() Driver)
+	newDriver := newDriverSymbolFunc
+	fmt.Println(newDriver().Name())
 }
