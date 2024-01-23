@@ -22,7 +22,7 @@ func main() {
 	gormdb.AutoMigrate(model.User{})
 	g.UseDB(gormdb)
 	g.ApplyBasic(model.User{})
-	//g.ApplyInterface( func(Querier) {},model.User{})
+	g.ApplyInterface(func(Querier) {}, model.User{})
 	g.Execute()
 
 }
