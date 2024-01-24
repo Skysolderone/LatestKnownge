@@ -10,7 +10,9 @@ import (
 
 type Querier interface {
 	// SELECT * FROM @@table WHERE name = @name{{if role !=""}} AND role = @role{{end}}
-	FilterWithNameAndRole(name, role string) ([]gen.T, error)
+	FilterWithNameAndRole(name, role string) (gen.T, error)
+	//select name from users where count in (@ls)
+	Get(ls int) (gen.T, error)
 }
 
 func main() {

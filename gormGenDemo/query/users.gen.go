@@ -161,11 +161,12 @@ type IUserDo interface {
 	UnderlyingDB() *gorm.DB
 	schema.Tabler
 
-	FilterWithNameAndRole(name string, role string) (result []model.User, err error)
+	FilterWithNameAndRole(name string, role string) (result model.User, err error)
+	Get(ls int) (result model.User, err error)
 }
 
 // SELECT * FROM @@table WHERE name = @name{{if role !=""}} AND role = @role{{end}}
-func (u userDo) FilterWithNameAndRole(name string, role string) (result []model.User, err error) {
+func (u userDo) FilterWithNameAndRole(name string, role string) (result model.User, err error) {
 	var params []interface{}
 
 	var generateSQL strings.Builder
@@ -177,7 +178,22 @@ func (u userDo) FilterWithNameAndRole(name string, role string) (result []model.
 	}
 
 	var executeSQL *gorm.DB
-	executeSQL = u.UnderlyingDB().Raw(generateSQL.String(), params...).Find(&result) // ignore_security_alert
+	executeSQL = u.UnderlyingDB().Raw(generateSQL.String(), params...).Take(&result) // ignore_security_alert
+	err = executeSQL.Error
+
+	return
+}
+
+// select name from users where count in (@ls)
+func (u userDo) Get(ls int) (result model.User, err error) {
+	var params []interface{}
+
+	var generateSQL strings.Builder
+	params = append(params, ls)
+	generateSQL.WriteString("select name from users where count in (?) ")
+
+	var executeSQL *gorm.DB
+	executeSQL = u.UnderlyingDB().Raw(generateSQL.String(), params...).Take(&result) // ignore_security_alert
 	err = executeSQL.Error
 
 	return
