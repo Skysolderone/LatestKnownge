@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"time"
 
 	"github.com/opentracing/opentracing-go"
 	"github.com/opentracing/opentracing-go/log"
@@ -46,6 +47,7 @@ func main() {
 	defer closer.Close()
 	opentracing.SetGlobalTracer(tracer)
 	span := tracer.StartSpan("say-hello")
+
 	defer span.Finish()
 	span.SetTag("hello-to", helloTo)
 	ctx := context.Background()
@@ -71,12 +73,14 @@ func formatString(ctx context.Context, s string) string {
 		log.String("event", "string-format"),
 		log.String("value", helloStr),
 	)
+	time.Sleep(2 * time.Second)
 	return helloStr
 }
 func printHello(ctx context.Context, s string) {
 	//rootspan := span.Tracer().StartSpan("printhello")
 	rootspan, _ := opentracing.StartSpanFromContext(ctx, "printhello")
 	defer rootspan.Finish()
+	time.Sleep(1 * time.Second)
 	println(s)
 	rootspan.LogKV("event", "println")
 }
