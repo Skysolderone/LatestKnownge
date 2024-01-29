@@ -1,0 +1,10 @@
+<body>
+    <a href="http://localhost:8080/login">点击登录</a>
+</body>
+<script>
+    fetch('http://localhost:8080/userinfo', {}).then(res => res.json())
+        .then(res => {
+            const nameNode = document.createTextNode(`Welcome, ${res.name}`)
+            document.body.appendChild(nameNode)
+        })
+</script>
