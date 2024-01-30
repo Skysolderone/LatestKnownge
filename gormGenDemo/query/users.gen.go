@@ -163,6 +163,7 @@ type IUserDo interface {
 
 	FilterWithNameAndRole(name string, role string) (result model.User, err error)
 	Get(ls int) (result model.User, err error)
+	FindTest() (result []model.User, err error)
 }
 
 // SELECT * FROM @@table WHERE name = @name{{if role !=""}} AND role = @role{{end}}
@@ -194,6 +195,18 @@ func (u userDo) Get(ls int) (result model.User, err error) {
 
 	var executeSQL *gorm.DB
 	executeSQL = u.UnderlyingDB().Raw(generateSQL.String(), params...).Take(&result) // ignore_security_alert
+	err = executeSQL.Error
+
+	return
+}
+
+// select * from users order by id desc
+func (u userDo) FindTest() (result []model.User, err error) {
+	var generateSQL strings.Builder
+	generateSQL.WriteString("select * from users order by id desc ")
+
+	var executeSQL *gorm.DB
+	executeSQL = u.UnderlyingDB().Raw(generateSQL.String()).Find(&result) // ignore_security_alert
 	err = executeSQL.Error
 
 	return

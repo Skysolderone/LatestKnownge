@@ -14,7 +14,9 @@ import (
 func main() {
 	gormdb, _ := gorm.Open(mysql.Open("root:gg123456@tcp(localhost:3306)/demo?charset=utf8mb4&parseTime=true&loc=Local"))
 	// query.Use(gormdb)
-	query.SetDefault(gormdb)
+	db := gormdb.Debug()
+	query.SetDefault(db)
+
 	u := query.User
 	// Basic DAO API
 	// user, err := query.User.Where(u.Name.Eq("wws")).First()
@@ -86,4 +88,12 @@ func main() {
 	lss := 2
 	obj, err = query.User.Get(lss)
 	fmt.Println(obj)
+	// sort := "id"
+	// object, err := query.User.Order(u.Id.Desc()).Find()
+
+	// for _, v := range object {
+	// 	fmt.Println(v)
+	// }
+	object, err := query.User.Limit(3).FindTest()
+	fmt.Println(object)
 }

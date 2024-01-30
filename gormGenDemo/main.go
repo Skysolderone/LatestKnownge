@@ -13,6 +13,8 @@ type Querier interface {
 	FilterWithNameAndRole(name, role string) (gen.T, error)
 	//select name from users where count in (@ls)
 	Get(ls int) (gen.T, error)
+	//select * from users order by id desc
+	FindTest() ([]gen.T, error)
 }
 
 func main() {
