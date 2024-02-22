@@ -2,10 +2,9 @@ package main
 
 import (
 	"fmt"
-
-	"v1/query"
-
 	"log"
+	"v1/model"
+	"v1/query"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -96,4 +95,16 @@ func main() {
 	// }
 	object, err := query.User.Limit(3).FindTest()
 	fmt.Println(object)
+
+	users := []model.User{{Name: "modi", Role: "admin", Id: 7, Count: 5}, {Name: "zhangqiang", Role: "admin", Id: 8, Count: 5}, {Name: "songyuan", Role: "admin", Id: 9, Count: 5}}
+	user := model.User{}
+	objs := make([]model.User, 0)
+	for _, v := range users {
+		user.Name = v.Name
+		user.Id = v.Id
+		user.Count = v.Count
+		user.Role = v.Role
+		objs = append(objs, user)
+	}
+	query.User.Create(users...)
 }
