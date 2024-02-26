@@ -12,7 +12,7 @@ import (
 //
 //	abigen --abi Storage.abi --pkg main --type Storage --out Storage.go
 
-const Key = `json object from keystore`
+const Key = `0x10fbfb7b33FD146460b0249917C203C4ced9dD37`
 
 func main() {
 	conn, err := ethclient.Dial("/home/go-ethereum/goerli/geth_ipc")
