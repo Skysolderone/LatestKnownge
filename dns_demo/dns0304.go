@@ -18,7 +18,7 @@ func resolve(domain string, qtype uint16) []dns.RR {
 		log.Fatal(err)
 	}
 	if response == nil {
-		log.Fatal("no response ")
+		log.Fatal("no response")
 	}
 	for _, answer := range response.Answer {
 		fmt.Printf("%s\n", answer.String())
