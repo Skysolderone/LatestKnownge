@@ -26,7 +26,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = file.Write(pitcurefile)
+	_, err = file.Write(reuslt)
 	if err != nil {
 		log.Fatal(err)
 	}
