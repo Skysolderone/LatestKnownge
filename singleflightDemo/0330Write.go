@@ -65,6 +65,6 @@ func main() {
 			syncjob.Do(file)
 		}()
 	}
-	file.WriteString("hello \n")
+	file.WriteString("hello \nit ")
 	wg.Wait()
 }
