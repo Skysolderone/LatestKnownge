@@ -11,10 +11,12 @@ import (
 type Querier interface {
 	// SELECT * FROM @@table WHERE name = @name{{if role !=""}} AND role = @role{{end}}
 	FilterWithNameAndRole(name, role string) (gen.T, error)
-	//select name from users where count in (@ls)
+	// select name from users where count in (@ls)
 	Get(ls int) (gen.T, error)
-	//select * from users order by id desc
+	// select * from users order by id desc
 	FindTest() ([]gen.T, error)
+	// select * from users where ({{if name=="test"}}name=@name and  {{end}}{{if role>-5}}role=@role and {{end}}count=5)
+	Testget(name string, role int) (gen.T, error)
 }
 
 func main() {
@@ -28,5 +30,4 @@ func main() {
 	g.ApplyBasic(model.User{})
 	g.ApplyInterface(func(Querier) {}, model.User{})
 	g.Execute()
-
 }

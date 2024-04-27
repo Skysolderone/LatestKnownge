@@ -164,6 +164,7 @@ type IUserDo interface {
 	FilterWithNameAndRole(name string, role string) (result model.User, err error)
 	Get(ls int) (result model.User, err error)
 	FindTest() (result []model.User, err error)
+	Testget(name string, role int) (result model.User, err error)
 }
 
 // SELECT * FROM @@table WHERE name = @name{{if role !=""}} AND role = @role{{end}}
@@ -207,6 +208,29 @@ func (u userDo) FindTest() (result []model.User, err error) {
 
 	var executeSQL *gorm.DB
 	executeSQL = u.UnderlyingDB().Raw(generateSQL.String()).Find(&result) // ignore_security_alert
+	err = executeSQL.Error
+
+	return
+}
+
+// select * from users where ({{if name=="test"}}name=@name and  {{end}}{{if role>-5}}role=@role and {{end}}count=5)
+func (u userDo) Testget(name string, role int) (result model.User, err error) {
+	var params []interface{}
+
+	var generateSQL strings.Builder
+	generateSQL.WriteString("select * from users where ( ")
+	if name == "test" {
+		params = append(params, name)
+		generateSQL.WriteString("name=? and ")
+	}
+	if role > -5 {
+		params = append(params, role)
+		generateSQL.WriteString("role=? and ")
+	}
+	generateSQL.WriteString("count=5) ")
+
+	var executeSQL *gorm.DB
+	executeSQL = u.UnderlyingDB().Raw(generateSQL.String(), params...).Take(&result) // ignore_security_alert
 	err = executeSQL.Error
 
 	return
