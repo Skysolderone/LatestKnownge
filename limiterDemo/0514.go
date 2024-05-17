@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	ls := rate.NewLimiter(100, 100)
+	ls := rate.NewLimiter(10, 1)
 	for i := range 1000000 {
 		ls.Wait(context.Background())
 
