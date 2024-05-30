@@ -17,4 +17,5 @@ func main() {
 	fmt.Println(str)
 	change := strings.Split(str, ".")
 	fmt.Println(change[0])
+	fmt.Println(17 * 3500 * 7)
 }
