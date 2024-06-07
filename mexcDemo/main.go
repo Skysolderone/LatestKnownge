@@ -12,11 +12,15 @@ func main() {
 	spot := new(mexcsdk.MexcFutureClient).Init("mx0vgl9MW1A354huGP", "ea5f6fadc57d433d8dbcc1e545c51d49", "https://contract.mexc.com")
 	// params := make(map[string]string, 0)
 	// params["symbol"] = "BTCUSDT"
+	// fmt.Println(spot.MexcClient.URL)
 	result, err := spot.GetSymbolDetail(nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(result)
+	// fmt.Println(result.Data)
+	for _, v := range result.Data {
+		fmt.Println(v.BaseCoin)
+	}
 	// for v := range result.Symbols {
 	// }
 }

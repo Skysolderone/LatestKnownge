@@ -14,6 +14,7 @@ type MexcFutureClient struct {
 }
 
 func (m *MexcFutureClient) Init(api, sec, url string) *MexcFutureClient {
+	fmt.Println(url)
 	m.MexcClient = new(client.MexcBaseClient).Init(api, sec, url, "mexc_future")
 	return m
 }

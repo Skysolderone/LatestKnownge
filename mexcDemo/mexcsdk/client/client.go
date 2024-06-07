@@ -22,7 +22,7 @@ type MexcBaseClient struct {
 }
 
 func (m *MexcBaseClient) Init(api, sec, url, ex string) *MexcBaseClient {
-	m.URL = config.URL
+	m.URL = url
 	if url == "" {
 		m.URL = config.URL
 	}
@@ -47,6 +47,8 @@ func (m *MexcBaseClient) DoGet(uri string, query map[string]string) (string, err
 	sign := computeHmac256(body, m.Secret)
 	body += fmt.Sprintf("&signature=%s", sign)
 	url := m.URL + uri
+
+	fmt.Println(url)
 	m.Client.Debug = true
 	resp, err := m.Client.R().SetHeader("x-ex", m.Ex).SetHeader("X-MEXC-APIKEY", m.Apikey).SetQueryString(body).Get(url)
 	if err != nil {
