@@ -38,3 +38,14 @@ func (m *MexcSpotClient) GetOrder(params map[string]string) (model.AccountInfo, 
 	sonic.Unmarshal([]byte(result), &balance)
 	return balance, nil
 }
+
+func (m *MexcSpotClient) GetSymbolDetail(params map[string]string) (model.ExchangeInfo, error) {
+	result, err := m.MexcClient.DoGet("/api/v3/exchangeInfo", params)
+	if err != nil {
+		return model.ExchangeInfo{}, err
+	}
+	fmt.Println(result)
+	balance := model.ExchangeInfo{}
+	sonic.Unmarshal([]byte(result), &balance)
+	return balance, nil
+}
