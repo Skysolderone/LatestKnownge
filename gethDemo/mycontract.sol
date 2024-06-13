@@ -2,7 +2,7 @@
 pragma solidity ^0.8.24;
 
 contract MyContract {
-    uint256 private value;
+    uint256 value;
 
     function setValue(uint256 _value) public {
         value = _value;
