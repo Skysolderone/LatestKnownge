@@ -25,6 +25,7 @@ func main() {
 	}
 
 	result := unsafe.Slice((*byte)(unsafe.Pointer(&s)), unsafe.Sizeof(s))
+	// bytdat := convert.StructToByte(s, n)
 
 	var newdata data1
 	copy(unsafe.Slice((*byte)(unsafe.Pointer(&newdata)), unsafe.Sizeof(s)), result)
