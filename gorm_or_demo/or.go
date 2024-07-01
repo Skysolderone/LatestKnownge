@@ -117,7 +117,10 @@ func main() {
 	s := "+12 345678"
 	db.Table("players").
 		Where(Player{ID: 21, Nickname: "89k"}).
-		Or(Player{Phone: s, Nickname: "89"}).
-		Or(Player{Phone: s, Nickname: "8l"}).Find(&p)
+		Or(Player{Phone: s, Nickname: "89k"}).
+		Or(Player{Phone: s, Nickname: "8l"}).
+		Not(map[string]interface{}{"balance": []float64{20000.000, 2000.000}}).
+		Find(&p)
+
 	fmt.Println(p)
 }
