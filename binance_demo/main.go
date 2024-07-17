@@ -51,7 +51,6 @@ func main() {
 		keepAlive(conn, time.Second*60)
 		for {
 			_, msg, err := conn.ReadMessage()
-			fmt.Println("GET MSG", msg)
 			if err != nil {
 				fmt.Println(err)
 			}
