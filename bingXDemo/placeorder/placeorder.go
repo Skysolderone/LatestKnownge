@@ -14,24 +14,26 @@ import (
 )
 
 const (
-	HOST       = "http://13.213.132.125:8000"
-	API_KEY    = "7yo2zVFgQILyP1mQhG0NxPowbKHgVcWv1hcSP3lulJ7lrsjvXoUI2aZOdSpYwBtzDu6hbt8TWRcvMsXNfrmQ"
-	API_SECRET = "mVhsWk1RsUgUrtcKnOu3LP3CXrIwZnKWwvPPgDylQ89ZZRDIcmjLTlN5diTXbzoSuGCsovDoEPsLAgTosGjgQ"
+	HOST       = "open-api.bingx.com"
+	API_KEY    = "vVQWDndnEPwM5c08ttGx9zy8FOILsmNO2p67hyUIeCoF1iluEzXva5raa5Hc5RknHtDkdoMMqBwVaakhA"
+	API_SECRET = "RS48Ul6r8VzEMakjaQCgYN2fOYJTbhk2GIdOxW24kywfSMuXuAXe2G7XncssGeVGsfRwiJWEJTaOqcmglsQ"
 )
 
 func main() {
 	dataStr := `{
-    "uri": "/openApi/spot/v1/account/balance",
-    "method": "GET",
+    "uri": "/openApi/swap/v2/trade/order/test",
+    "method": "POST",
     "protocol": "https"
 }`
 	payload := `{
-    "recvWindow": "60000"
+    "symbol": "BTC-USDT",
+    "side": "BUY",
+    "positionSide": "LONG",
+    "type": "MARKET",
+    "quantity": 5
 }`
 	TIMESTAMP := time.Now().UnixNano() / 1e6
 	apiMap := getParameters(dataStr, payload, false, TIMESTAMP)
-	fmt.Println(apiMap["parameters"])
-	fmt.Println(API_SECRET)
 	sign := computeHmac256(fmt.Sprintf("%v", apiMap["parameters"]), API_SECRET)
 	fmt.Println("parameters:", fmt.Sprintf("%v", apiMap["parameters"]))
 	fmt.Println("sign:", sign)
@@ -43,6 +45,7 @@ func main() {
 	} else {
 		parameters = fmt.Sprintf("%v&signature=%s", apiMap["parameters"], sign)
 	}
+	// fmt.Println(parameters)
 	url := fmt.Sprintf("%v://%s%v?%s", apiMap["protocol"], HOST, apiMap["uri"], parameters)
 	method := fmt.Sprintf("%v", apiMap["method"])
 	client := &http.Client{}
