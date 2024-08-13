@@ -1,0 +1,1 @@
+[31mThis red text will be written to a file[0m
