@@ -116,7 +116,7 @@ func getCountDown(ts []uint, t int64) int64 {
 
 func main() {
 	// 1730427540
-	t := int64(1730770860)
-	ts := []uint{2, 3}
+	t := int64(1729649340)
+	ts := []uint{3, 4}
 	fmt.Println(getCountDown(ts, t))
 }
