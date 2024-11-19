@@ -102,13 +102,12 @@ func (m *MarketFutureClient) SetMarginType(params map[string]string) (model.Marg
 
 func (m *MarketFutureClient) GetBanlanceDetail(params map[string]string) (model.FutureAccountResponse, error) {
 	result, err := m.KrakenClient.DoGet("/api/v3/accounts", params)
-	fmt.Printf("%#v", result)
 	if err != nil {
 		fmt.Println(err)
 		return model.FutureAccountResponse{}, err
 	}
 	resp := model.FutureAccountResponse{}
-	sonic.Unmarshal([]byte(result), &resp)
+	sonic.Unmarshal(result, &resp)
 	return resp, nil
 }
 

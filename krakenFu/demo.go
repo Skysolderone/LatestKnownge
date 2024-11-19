@@ -1,10 +1,7 @@
 package main
 
 import (
-	"crypto/hmac"
-	"crypto/sha256"
-	"crypto/sha512"
-	"encoding/base64"
+	"fmt"
 
 	"v1/market"
 )
@@ -12,8 +9,12 @@ import (
 // import "v1/market"
 
 func main() {
-	client := new(market.MarketFutureClient).Init(api, sec)
-	client.GetBanlanceDetail(nil)
+	client := new(market.MarketFutureClient).Init(Api, Sec)
+	result, err := client.GetBanlanceDetail(nil)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf("%#v", result)
 }
 
 // import (
@@ -28,11 +29,6 @@ func main() {
 // 	"strconv"
 // 	"time"
 // )
-
-var (
-	api = "A7kTyVygHOLeL/F8MpOJ+qB3gEgSVE4WMINe8fVV+SSi2yWmOVf8AhnT"
-	sec = "iv2C0PlnezHIpYYGG1H2TQuuKGphYQqCh879Qzl2fhddBy/Hj+3f5N4CKbwwJYud25UKSguqO4ORABcFU/AR0g=="
-)
 
 // func main() {
 // 	urls := "https://futures.kraken.com/derivatives/api/v3/accounts"
@@ -108,18 +104,3 @@ var (
 // 	}
 // 	fmt.Println(string(body))
 // }
-
-func SignParam(urlPath, secret, payload string) (signStr string, err error) {
-	sha := sha256.New()
-	sha.Write([]byte(payload))
-	shasum := sha.Sum(nil)
-
-	s, err := base64.StdEncoding.DecodeString(secret)
-	if err != nil {
-		return
-	}
-	mac := hmac.New(sha512.New, s)
-	mac.Write(append([]byte(urlPath), shasum...))
-	macsum := mac.Sum(nil)
-	return base64.StdEncoding.EncodeToString(macsum), nil
-}

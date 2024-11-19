@@ -33,7 +33,23 @@ func (bc *KrakenClient) Init(api, sec string) *KrakenClient {
 	return bc
 }
 
-func (bc *KrakenClient) DoGet(uri string, params map[string]string) (string, error) {
+func Signature(data string, nonce string, endpointPath string, secret string) (string, error) {
+	message := data + nonce + endpointPath
+	sha256Hash := sha256.New()
+	sha256Hash.Write([]byte(message))
+	messageHashed := sha256Hash.Sum(nil)
+	decodedSecret, err := base64.StdEncoding.DecodeString(secret)
+	if err != nil {
+		return "", fmt.Errorf("failed to decode secret: %s", err)
+	}
+	hmacHash := hmac.New(sha512.New, decodedSecret)
+	hmacHash.Write(messageHashed)
+	signature := hmacHash.Sum(nil)
+	b64Signature := base64.StdEncoding.EncodeToString(signature)
+	return b64Signature, nil
+}
+
+func (bc *KrakenClient) DoGet(uri string, params map[string]string) ([]byte, error) {
 	body := utils.BuildGetParams(params)
 
 	// if body == "" {
@@ -42,56 +58,24 @@ func (bc *KrakenClient) DoGet(uri string, params map[string]string) (string, err
 	// 	body += "&recvWindow=60000&timestamp=" + fmt.Sprintf("%d", timestemp)
 	// }
 	// nonce := strconv.FormatInt(time.Now().UnixMilli(), 10)
-	payload := body + uri
-	fmt.Println(payload)
+	// payload := body + uri
+	// fmt.Println(payload)
 	url := bc.BaseUrl + "/derivatives" + uri
 	bc.HttpClient.Debug = true
-	sha := sha256.New()
-	sha.Write([]byte(payload))
-	shasum := sha.Sum(nil)
-	s, err := base64.StdEncoding.DecodeString(bc.ApiSecretKey)
+
+	auth, err := Signature(body, "", uri, bc.ApiSecretKey)
 	if err != nil {
 		fmt.Println(err)
-		return "", err
 	}
-	message := append([]byte(uri), shasum...)
-	mac := hmac.New(sha512.New, s)
-	mac.Write(message)
-	macsum := mac.Sum(nil)
-
-	auth := base64.StdEncoding.EncodeToString(macsum)
+	fmt.Println(auth)
 	resp, err := bc.HttpClient.R().SetHeader("x-ex", "kf").SetHeader("Content-Type", "application/json").
 		SetHeader("APIKey", bc.ApiKey).
 		SetHeader("Authent", auth).SetQueryString(body).Get(url)
 	if err != nil {
 		fmt.Println(err)
-		return "", err
+		return []byte{}, err
 	}
-	return string(resp.Body()), nil
-	req, err := http.NewRequest("GET", url, nil)
-	if err != nil {
-		// fmt.Println(err)
-		return "", err
-	}
-	req.Header.Add("X-BX-APIKEY", bc.ApiKey)
-	req.Header.Add("x-ex", "bx")
-
-	client := &http.Client{}
-
-	res, err := client.Do(req)
-	if err != nil {
-		// fmt.Println(err)
-		return "", err
-	}
-	defer res.Body.Close()
-
-	// resp, err := ioutil.ReadAll(res.Body)
-	// if err != nil {
-	// 	// fmt.Println(err)
-	// 	return "", err
-	// }
-	// return string(resp), nil
-	return "", nil
+	return resp.Body(), nil
 }
 
 func (bc *KrakenClient) DoPost(uri string, params map[string]string) (string, error) {
