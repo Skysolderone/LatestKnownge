@@ -13,7 +13,7 @@ import (
 )
 
 // Signature computes the authentication string for the given data, nonce, and endpoint path.
-func Signature(data string, nonce string, endpointPath string, secret string) (string, error) {
+func Signature2(data string, nonce string, endpointPath string, secret string) (string, error) {
 	message := data + nonce + endpointPath
 	sha256Hash := sha256.New()
 	sha256Hash.Write([]byte(message))
