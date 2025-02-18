@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	var topic = "learnnsq"
+	topic := "learnnsq"
 	config := nsq.NewConfig()
 	w, err := nsq.NewProducer("127.0.0.1:4150", config)
 	if err != nil {

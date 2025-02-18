@@ -14,8 +14,9 @@ func (*myHandler) HandleMessage(message *nsq.Message) error {
 	fmt.Println(string(message.Body))
 	return nil
 }
+
 func main() {
-	var topic = "learnnsq"
+	topic := "learnnsq"
 	var wg sync.WaitGroup
 	wg.Add(1)
 	config := nsq.NewConfig()
