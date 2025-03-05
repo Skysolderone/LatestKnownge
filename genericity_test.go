@@ -30,12 +30,11 @@ type sumType interface {
 func sumGEN[T sumType](n []T) T {
 	var s T
 	for _, item := range n {
-
 		s += item
-
 	}
 	return s
 }
+
 func TestGenericity(t *testing.T) {
 	data1 := []int32{20, 50, 10, 30}
 	data2 := []float32{32.3, 45.1, 54.3, 65.4}
@@ -50,12 +49,11 @@ func TestGenericity(t *testing.T) {
 	// }
 	// sum1 := sum(data1interface)
 	// sum2 := sum(data2interface)
-	//use genericity
+	// use genericity
 	sum1 := sumGEN[int32](data1)
 	sum2 := sumGEN[float32](data2)
 	sum3 := sumGEN[string](data3)
 	fmt.Printf("sum1:%v,(%T)\n", sum1, sum1)
 	fmt.Printf("sum2:%v,(%T)\n", sum2, sum2)
 	fmt.Printf("sum3:%v,(%T)\n", sum3, sum3)
-
 }
