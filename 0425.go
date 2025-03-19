@@ -25,6 +25,6 @@ func main() {
 	if o, ok := ls["test"]; ok {
 		fmt.Println(o)
 		o.Age = 3
-		
+
 	}
 }

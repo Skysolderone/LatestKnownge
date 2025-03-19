@@ -26,6 +26,7 @@ func TestTransport(t *testing.T) {
 	cancel()
 	time.Sleep(time.Second)
 }
+
 func worker(ctx context.Context) {
 	for {
 		select {
@@ -54,7 +55,6 @@ func TestRealizeCancel(t *testing.T) {
 	time.Sleep(time.Second)
 	cancel()
 	time.Sleep(time.Second)
-
 }
 
 // time out control
@@ -68,7 +68,6 @@ func TestContextTimeOutControl(t *testing.T) {
 	case <-time.After(time.Second * 3):
 		t.Log("workering...")
 	}
-
 }
 
 // value transfer
@@ -80,7 +79,7 @@ func TestContextTransferValue(t *testing.T) {
 
 // context process http time out
 func handler(w http.ResponseWriter, r *http.Request) {
-	//ctx := r.Context()
+	// ctx := r.Context()
 	ctx, cancel := context.WithTimeout(r.Context(), 2*time.Second)
 	defer cancel()
 	select {
@@ -93,6 +92,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	}
 }
+
 func TestContextProcessHttp(t *testing.T) {
 	http.HandleFunc("/", handler)
 	http.ListenAndServe(":8080", nil)
