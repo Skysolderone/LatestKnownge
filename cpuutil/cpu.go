@@ -11,6 +11,7 @@ import (
 	"github.com/shirou/gopsutil/v4/load"
 	"github.com/shirou/gopsutil/v4/mem"
 	"github.com/shirou/gopsutil/v4/net"
+	"github.com/shirou/gopsutil/v4/process"
 )
 
 func getCpuLoad() {
@@ -38,6 +39,7 @@ func getCpuInfo() {
 			} else {
 				fmt.Printf("cpu percent: %v\n", perenct[0])
 			}
+			fmt.Println(perenct)
 		}
 	}()
 }
@@ -95,6 +97,35 @@ func connectpid() {
 	}
 }
 
+func getProcess() {
+	var root []*process.Process
+	processes, err := process.Processes()
+	if err != nil {
+		fmt.Println(err)
+	}
+	for _, v := range processes {
+		// if v.Pid == 0 {
+		// 	root, _ = v.Children()
+		// 	break
+		// }
+
+		persnet, _ := v.CPUPercent()
+		if persnet > 10 {
+			fmt.Printf("pid%#v\n", v.Pid)
+			name, _ := v.Name()
+
+			fmt.Printf("name%#v\n", name)
+			fmt.Println("cpu user:", persnet)
+		}
+	}
+	fmt.Println(len(root))
+	for _, v := range root {
+		fmt.Printf("pid%#v\n", v.Pid)
+		name, _ := v.Name()
+		fmt.Printf("name%#v\n", name)
+	}
+}
+
 func main() {
 	// getCpuLoad()
 	// getMemInfo()
@@ -103,7 +134,8 @@ func main() {
 	// getNetIO()
 	// getLocalIp()
 	// getPids()
-	connectpid()
+	// connectpid()
+	getProcess()
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt)
 	<-c

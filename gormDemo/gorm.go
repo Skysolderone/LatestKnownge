@@ -6,7 +6,7 @@ import (
 
 	"v1/model"
 
-	"gorm.io/driver/mysql"
+	
 	"gorm.io/gorm"
 )
 
