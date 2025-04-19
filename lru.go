@@ -26,6 +26,7 @@ func (l *Lru) gets(key int) int {
 	}
 	return -1
 }
+
 func (l *Lru) refresh(s *Node) {
 	if s == l.end {
 		return
@@ -33,6 +34,7 @@ func (l *Lru) refresh(s *Node) {
 	l.remove(s)
 	l.add(s)
 }
+
 func (l *Lru) remove(s *Node) int {
 	if s == l.end {
 		l.end = l.end.front
@@ -46,6 +48,7 @@ func (l *Lru) remove(s *Node) int {
 	}
 	return s.key
 }
+
 func (l *Lru) add(v *Node) {
 	if l.end != nil {
 		l.end.next = v
@@ -57,6 +60,7 @@ func (l *Lru) add(v *Node) {
 		l.head = v
 	}
 }
+
 func (l *Lru) puts(k, v int) {
 	if v, ok := l.hashmap[key]; !ok {
 		if len(l.hashmap) >= l.limit {
@@ -71,5 +75,4 @@ func (l *Lru) puts(k, v int) {
 		v.value = v
 		l.refresh(v)
 	}
-
 }
