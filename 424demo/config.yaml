@@ -1,0 +1,5 @@
+Auth:
+  Enable: true
+  AccessSecret: wws123456
+  Secret: wws123456
+  AccessExpire: 86400
